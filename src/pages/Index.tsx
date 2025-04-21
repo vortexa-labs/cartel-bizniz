@@ -21,9 +21,9 @@ const Index = () => {
     }
   }, []);
 
-  // Set font size to 17px, no bold, color to bright orange, and line height 1.2 for scrolling text
+  // Set font size to 15px, no bold, color to bright orange, and line height 1.2 for scrolling text
   const customFontStyle: React.CSSProperties = {
-    fontSize: "17px",
+    fontSize: "15px",
     fontWeight: 400, // normal weight,
     lineHeight: 1.2,
     color: "#F97316",
