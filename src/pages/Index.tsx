@@ -24,11 +24,11 @@ const Index = () => {
 
   // Set font size to 23px, bold, everywhere for scrolling text
   const customFontStyle: React.CSSProperties = {
-    fontSize: "23px",
+    fontSize: "17px",
     fontWeight: 700,
     lineHeight: 1.2,
   };
-  // Border color: dark gray for separation (hex #222)
+  // Add border for header and footer scroll for distinct hero section
   const borderClasses = "border-y border-[#222] bg-black/60 backdrop-blur-sm";
 
   return (
@@ -83,3 +83,4 @@ const Index = () => {
 };
 
 export default Index;
+
