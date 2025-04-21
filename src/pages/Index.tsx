@@ -8,6 +8,8 @@ import VideoBackground from "@/components/VideoBackground";
 // Sample video URL - replace with your own video
 const videoUrl = "https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4";
 
+const contractAddress = "DX6XqmtEs8zTyswu4cBpsgAvjsw1kUGGi6rxF3jWpump";
+
 const Index = () => {
   const [loaded, setLoaded] = useState(false);
 
@@ -24,6 +26,9 @@ const Index = () => {
       metaDescription.setAttribute("content", "Modern brand showcase with scrolling text and video background");
     }
   }, []);
+
+  // Use a uniform smaller font size for top and bottom scrolling texts
+  const fontSize = "text-xl sm:text-2xl md:text-3xl lg:text-3xl";
 
   return (
     <div className={`relative min-h-screen w-full overflow-hidden bg-black text-white animate-fade-in`}>
@@ -47,8 +52,8 @@ const Index = () => {
         {/* Top Scrolling Text */}
         <div className="py-5 bg-black/60 backdrop-blur-sm">
           <ScrollingText 
-            text="BRAND NEW COLLECTION • EXCLUSIVE RELEASE • LIMITED EDITION • " 
-            fontSize="text-3xl sm:text-4xl md:text-5xl lg:text-6xl" 
+            text={`${contractAddress} • `} 
+            fontSize={fontSize}
           />
         </div>
 
@@ -65,8 +70,8 @@ const Index = () => {
           {/* Bottom Scrolling Text */}
           <div className="py-4 bg-black/60 backdrop-blur-sm">
             <ScrollingText 
-              text="FOLLOW US • JOIN THE COMMUNITY • STAY CONNECTED • " 
-              fontSize="text-xl sm:text-2xl md:text-3xl lg:text-4xl"
+              text={`${contractAddress} • `}
+              fontSize={fontSize}
               direction="right"
             />
           </div>
@@ -77,3 +82,4 @@ const Index = () => {
 };
 
 export default Index;
+
