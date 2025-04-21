@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import ScrollingText from "@/components/ScrollingText";
 import SocialIcons from "@/components/SocialIcons";
@@ -22,13 +21,15 @@ const Index = () => {
     }
   }, []);
 
-  // Set font size to 17px, no bold, everywhere for scrolling text
+  // Set font size to 17px, no bold, color to bright orange, and line height 1.2 for scrolling text
   const customFontStyle: React.CSSProperties = {
     fontSize: "17px",
-    fontWeight: 400, // changed to normal weight
+    fontWeight: 400, // normal weight,
     lineHeight: 1.2,
+    color: "#F97316",
   };
-  // Add border for header and footer scroll for distinct hero section + smaller glow effect in orange
+
+  // Border for header and footer scroll with smaller glow effect in orange
   const borderClasses = "border-y border-[#222] bg-black/60 backdrop-blur-sm shadow-[0_0_8px_1px_#F97316]";
 
   return (
@@ -51,7 +52,7 @@ const Index = () => {
       {/* Content Container */}
       <div className="relative z-20 flex flex-col justify-between min-h-screen h-full">
         {/* Top Scrolling Text */}
-        <div className={borderClasses + " py-5"}>
+        <div className={`${borderClasses} py-2` /* reduced vertical padding for smaller height */}>
           <ScrollingText 
             text={contractAddress}
             style={customFontStyle}
@@ -69,7 +70,7 @@ const Index = () => {
           <SocialIcons className="py-6" />
           
           {/* Bottom Scrolling Text */}
-          <div className={borderClasses + " py-4"}>
+          <div className={`${borderClasses} py-2` /* reduced vertical padding for smaller height */}>
             <ScrollingText 
               text={contractAddress}
               style={customFontStyle}
@@ -83,4 +84,3 @@ const Index = () => {
 };
 
 export default Index;
-
