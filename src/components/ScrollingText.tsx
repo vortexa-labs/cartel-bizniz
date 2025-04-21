@@ -22,13 +22,13 @@ const ScrollingText: React.FC<ScrollingTextProps> = ({
     <div className="scroll-container" role="marquee">
       <div className="scrolling-text">
         <span
-          className={`${animationClass} uppercase tracking-wider`}
+          className={`${animationClass} tracking-wider`}
           style={style}
         >
           {repeatedText}
         </span>
         <span
-          className={`${animationClass} uppercase tracking-wider`}
+          className={`${animationClass} tracking-wider`}
           aria-hidden="true"
           style={style}
         >
@@ -40,3 +40,4 @@ const ScrollingText: React.FC<ScrollingTextProps> = ({
 };
 
 export default ScrollingText;
+
