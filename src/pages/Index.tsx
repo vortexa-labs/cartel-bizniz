@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import ScrollingText from "@/components/ScrollingText";
 import SocialIcons from "@/components/SocialIcons";
@@ -27,8 +28,8 @@ const Index = () => {
     fontWeight: 400, // changed to normal weight
     lineHeight: 1.2,
   };
-  // Add border for header and footer scroll for distinct hero section
-  const borderClasses = "border-y border-[#222] bg-black/60 backdrop-blur-sm";
+  // Add border for header and footer scroll for distinct hero section + glow effect
+  const borderClasses = "border-y border-[#222] bg-black/60 backdrop-blur-sm shadow-[0_0_16px_2px_#9b87f5]";
 
   return (
     <div className={`relative min-h-screen w-full overflow-hidden bg-black text-white animate-fade-in`}>
@@ -82,3 +83,4 @@ const Index = () => {
 };
 
 export default Index;
+
