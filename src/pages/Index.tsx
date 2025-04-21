@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import ScrollingText from "@/components/ScrollingText";
 import SocialIcons from "@/components/SocialIcons";
@@ -56,7 +57,7 @@ const Index = () => {
           <ScrollingText 
             text={contractAddress}
             style={customFontStyle}
-            duration={30} // slower scroll speed
+            duration={45} // even slower scroll speed
           />
         </div>
 
@@ -76,7 +77,7 @@ const Index = () => {
               text={contractAddress}
               style={customFontStyle}
               direction="right"
-              duration={30}
+              duration={45} // even slower scroll speed
             />
           </div>
         </div>

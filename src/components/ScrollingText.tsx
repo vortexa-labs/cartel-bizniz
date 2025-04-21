@@ -16,8 +16,8 @@ const ScrollingText: React.FC<ScrollingTextProps> = ({
 }) => {
   const animationClass = direction === "left" ? "animate-scroll-left-custom" : "animate-scroll-right-custom";
 
-  // Use a more visible separator between repeats
-  const repeatedText = Array(3).fill(text).join(" ● ");
+  // Add more spacing and a stronger visual separator between repeats
+  const repeatedText = Array(3).fill(text).join("   ★   ");
 
   return (
     <div
