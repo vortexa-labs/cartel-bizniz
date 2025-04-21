@@ -31,6 +31,8 @@ const Index = () => {
   // The video must be in the public folder to be accessible
   // Verify the path is correct relative to the public directory
   const videoPath = "/hero.mp4";
+  const fallbackImagePath = "/lovable-uploads/2315e86c-dabc-4acc-872a-4b2a89136c42.png";
+  
   console.log("Loading video from path:", videoPath);
 
   return (
@@ -38,7 +40,8 @@ const Index = () => {
       <VideoBackground 
         videoUrl={videoPath}
         overlayOpacity={50} 
-        blurAmount={2} 
+        blurAmount={2}
+        fallbackImageUrl={fallbackImagePath}
       />
 
       {/* Content Container */}

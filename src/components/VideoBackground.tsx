@@ -5,12 +5,14 @@ interface VideoBackgroundProps {
   videoUrl: string;
   overlayOpacity?: number;
   blurAmount?: number;
+  fallbackImageUrl?: string;
 }
 
 const VideoBackground: React.FC<VideoBackgroundProps> = ({
   videoUrl,
   overlayOpacity = 50,
   blurAmount = 2,
+  fallbackImageUrl,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -65,14 +67,26 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
         style={{ backdropFilter: `blur(${blurAmount}px)` }}
         className={`absolute inset-0 bg-black/${overlayOpacity} z-10 transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
       ></div>
+      
       {hasError && (
-        <div className="absolute inset-0 flex items-center justify-center text-white bg-black/80 z-20">
-          <p className="text-center p-4">
-            Unable to load video from: {videoUrl}<br/>
-            Please check that the file exists and is in the correct format.
-          </p>
+        <div className="absolute inset-0 z-5">
+          {fallbackImageUrl ? (
+            <img 
+              src={fallbackImageUrl} 
+              alt="Background" 
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center text-white bg-black/80 z-20">
+              <p className="text-center p-4">
+                Unable to load video from: {videoUrl}<br/>
+                Please check that the file exists and is in the correct format.
+              </p>
+            </div>
+          )}
         </div>
       )}
+      
       <video
         ref={videoRef}
         src={videoUrl}
