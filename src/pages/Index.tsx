@@ -57,7 +57,7 @@ const Index = () => {
           <ScrollingText 
             text={contractAddress}
             style={customFontStyle}
-            duration={45} // even slower scroll speed
+            duration={60} // even slower scroll speed
           />
         </div>
 
@@ -77,7 +77,7 @@ const Index = () => {
               text={contractAddress}
               style={customFontStyle}
               direction="right"
-              duration={45} // even slower scroll speed
+              duration={60} // even slower scroll speed
             />
           </div>
         </div>

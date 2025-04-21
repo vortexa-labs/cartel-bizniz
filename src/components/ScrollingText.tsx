@@ -12,17 +12,18 @@ const ScrollingText: React.FC<ScrollingTextProps> = ({
   text, 
   direction = "left",
   style,
-  duration = 30, // default slower duration in seconds
+  duration = 45, // default slower duration in seconds
 }) => {
   const animationClass = direction === "left" ? "animate-scroll-left-custom" : "animate-scroll-right-custom";
 
-  // Add more spacing and a stronger visual separator between repeats
-  const repeatedText = Array(3).fill(text).join("   ★   ");
+  // Instead of concatenating the address, display it with a clear visual separator
+  // This prevents confusion when the end of one address runs into the start of another
+  const displayText = `${text} ⭐⭐⭐ ${text} ⭐⭐⭐ ${text}`;
 
   return (
     <div
       className="scroll-container"
-      style={{ height: "32px", minHeight: "32px", maxHeight: "32px" }} // reduce height
+      style={{ height: "32px", minHeight: "32px", maxHeight: "32px" }}
       role="marquee"
     >
       <div className="scrolling-text">
@@ -33,7 +34,7 @@ const ScrollingText: React.FC<ScrollingTextProps> = ({
             animationDuration: `${duration}s`
           }}
         >
-          {repeatedText}
+          {displayText}
         </span>
         <span
           className={`${animationClass} tracking-wider`}
@@ -43,7 +44,7 @@ const ScrollingText: React.FC<ScrollingTextProps> = ({
             animationDuration: `${duration}s`
           }}
         >
-          {repeatedText}
+          {displayText}
         </span>
       </div>
     </div>

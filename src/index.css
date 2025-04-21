@@ -132,8 +132,8 @@
   100% { transform: translateX(0); }
 }
 .animate-scroll-left-custom {
-  animation: scroll-left-custom 45s linear infinite;
+  animation: scroll-left-custom 60s linear infinite;
 }
 .animate-scroll-right-custom {
-  animation: scroll-right-custom 45s linear infinite;
+  animation: scroll-right-custom 60s linear infinite;
 }
