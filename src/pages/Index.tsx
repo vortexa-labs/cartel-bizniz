@@ -1,12 +1,8 @@
-
 import React, { useEffect, useState } from "react";
 import ScrollingText from "@/components/ScrollingText";
 import SocialIcons from "@/components/SocialIcons";
 import HeroButton from "@/components/HeroButton";
 import VideoBackground from "@/components/VideoBackground";
-
-// Sample video URL - replace with your own video
-const videoUrl = "https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4";
 
 const contractAddress = "DX6XqmtEs8zTyswu4cBpsgAvjsw1kUGGi6rxF3jWpump";
 
@@ -22,7 +18,6 @@ const Index = () => {
     }
   }, []);
 
-  // Set font size to 15px, no bold, color to bright orange, and line height 1.2 for scrolling text
   const customFontStyle: React.CSSProperties = {
     fontSize: "15px",
     fontWeight: 400, // normal weight,
@@ -30,7 +25,6 @@ const Index = () => {
     color: "#F97316",
   };
 
-  // Border for header and footer scroll with smaller glow effect in orange
   const borderClasses = "border-y border-[#222] bg-black/60 backdrop-blur-sm shadow-[0_0_8px_1px_#F97316]";
 
   return (
@@ -45,7 +39,7 @@ const Index = () => {
           playsInline
           className="h-full w-full object-cover"
         >
-          <source src={videoUrl} type="video/mp4" />
+          <source src="/hero.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       </div>
