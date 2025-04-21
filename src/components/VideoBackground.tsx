@@ -25,11 +25,11 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     setIsLoaded(false);
     setHasError(false);
     
+    console.log("Attempting to load video from:", videoUrl);
+    
     const handleLoaded = () => {
       setIsLoaded(true);
       console.log("Video loaded successfully");
-      console.log("Video duration:", videoElement.duration);
-      console.log("Video src:", videoElement.currentSrc);
       
       videoElement.play().catch(error => {
         console.error("Autoplay prevented:", error);
@@ -42,7 +42,9 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       setHasError(true);
     };
     
-    videoElement.addEventListener('canplaythrough', handleLoaded);
+    // Using multiple event listeners to catch various loading scenarios
+    videoElement.addEventListener('loadeddata', handleLoaded);
+    videoElement.addEventListener('canplay', handleLoaded); 
     videoElement.addEventListener('error', handleError);
     
     // Fallback if video is already loaded
@@ -51,7 +53,8 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     }
     
     return () => {
-      videoElement.removeEventListener('canplaythrough', handleLoaded);
+      videoElement.removeEventListener('loadeddata', handleLoaded);
+      videoElement.removeEventListener('canplay', handleLoaded);
       videoElement.removeEventListener('error', handleError);
     };
   }, [videoUrl]);
@@ -59,7 +62,8 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
       <div 
-        className={`absolute inset-0 bg-black/${overlayOpacity} backdrop-blur-[${blurAmount}px] z-10 transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+        style={{ backdropFilter: `blur(${blurAmount}px)` }}
+        className={`absolute inset-0 bg-black/${overlayOpacity} z-10 transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
       ></div>
       {hasError && (
         <div className="absolute inset-0 flex items-center justify-center text-white bg-black/80 z-20">
