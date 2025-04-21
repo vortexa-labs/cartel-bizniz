@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import ScrollingText from "@/components/ScrollingText";
 import SocialIcons from "@/components/SocialIcons";
@@ -22,10 +21,10 @@ const Index = () => {
     }
   }, []);
 
-  // Set font size to 23px, bold, everywhere for scrolling text
+  // Set font size to 17px, no bold, everywhere for scrolling text
   const customFontStyle: React.CSSProperties = {
     fontSize: "17px",
-    fontWeight: 700,
+    fontWeight: 400, // changed to normal weight
     lineHeight: 1.2,
   };
   // Add border for header and footer scroll for distinct hero section
@@ -83,4 +82,3 @@ const Index = () => {
 };
 
 export default Index;
-
