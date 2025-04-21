@@ -16,8 +16,8 @@ const ScrollingText: React.FC<ScrollingTextProps> = ({
 }) => {
   const animationClass = direction === "left" ? "animate-scroll-left-custom" : "animate-scroll-right-custom";
 
-  // Reduce repeats for less CA repetition
-  const repeatedText = Array(3).fill(text).join(" • ");
+  // Use a more visible separator between repeats
+  const repeatedText = Array(3).fill(text).join(" ● ");
 
   return (
     <div
