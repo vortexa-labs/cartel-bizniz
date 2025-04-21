@@ -52,10 +52,11 @@ const Index = () => {
       {/* Content Container */}
       <div className="relative z-20 flex flex-col justify-between min-h-screen h-full">
         {/* Top Scrolling Text */}
-        <div className={`${borderClasses} py-2` /* reduced vertical padding for smaller height */}>
+        <div className={`${borderClasses} py-2`}>
           <ScrollingText 
             text={contractAddress}
             style={customFontStyle}
+            duration={30} // slower scroll speed
           />
         </div>
 
@@ -70,11 +71,12 @@ const Index = () => {
           <SocialIcons className="py-6" />
           
           {/* Bottom Scrolling Text */}
-          <div className={`${borderClasses} py-2` /* reduced vertical padding for smaller height */}>
+          <div className={`${borderClasses} py-2`}>
             <ScrollingText 
               text={contractAddress}
               style={customFontStyle}
               direction="right"
+              duration={30}
             />
           </div>
         </div>
