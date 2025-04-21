@@ -5,12 +5,14 @@ interface ScrollingTextProps {
   text: string;
   fontSize?: string;
   direction?: "left" | "right";
+  style?: React.CSSProperties;
 }
 
 const ScrollingText: React.FC<ScrollingTextProps> = ({ 
   text, 
   fontSize = "text-3xl", 
-  direction = "left" 
+  direction = "left",
+  style,
 }) => {
   const animationClass = direction === "left" ? "animate-scroll-left" : "animate-scroll-right";
   
@@ -20,10 +22,17 @@ const ScrollingText: React.FC<ScrollingTextProps> = ({
   return (
     <div className="scroll-container" role="marquee">
       <div className="scrolling-text">
-        <span className={`${animationClass} ${fontSize} font-bold uppercase tracking-wider`}>
+        <span
+          className={`${animationClass} ${fontSize} uppercase tracking-wider`}
+          style={style}
+        >
           {repeatedText}
         </span>
-        <span className={`${animationClass} ${fontSize} font-bold uppercase tracking-wider`} aria-hidden="true">
+        <span
+          className={`${animationClass} ${fontSize} uppercase tracking-wider`}
+          aria-hidden="true"
+          style={style}
+        >
           {repeatedText}
         </span>
       </div>
@@ -32,3 +41,4 @@ const ScrollingText: React.FC<ScrollingTextProps> = ({
 };
 
 export default ScrollingText;
+

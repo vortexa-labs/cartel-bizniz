@@ -27,8 +27,15 @@ const Index = () => {
     }
   }, []);
 
-  // Use a uniform smaller font size for top and bottom scrolling texts
-  const fontSize = "text-xl sm:text-2xl md:text-3xl lg:text-3xl";
+  // Font size: 28px, bold.
+  const fontSize = "font-bold";
+  const customFontStyle: React.CSSProperties = {
+    fontSize: "28px",
+    fontWeight: 700,
+    lineHeight: 1.2,
+  };
+  // Border color: dark gray for separation (hex #222)
+  const borderClasses = "border-y border-[#222] bg-black/60 backdrop-blur-sm";
 
   return (
     <div className={`relative min-h-screen w-full overflow-hidden bg-black text-white animate-fade-in`}>
@@ -50,10 +57,11 @@ const Index = () => {
       {/* Content Container */}
       <div className="relative z-20 flex flex-col justify-between min-h-screen h-full">
         {/* Top Scrolling Text */}
-        <div className="py-5 bg-black/60 backdrop-blur-sm">
+        <div className={borderClasses + " py-5"}>
           <ScrollingText 
             text={`${contractAddress} • `} 
             fontSize={fontSize}
+            style={customFontStyle}
           />
         </div>
 
@@ -68,10 +76,11 @@ const Index = () => {
           <SocialIcons className="py-6" />
           
           {/* Bottom Scrolling Text */}
-          <div className="py-4 bg-black/60 backdrop-blur-sm">
+          <div className={borderClasses + " py-4"}>
             <ScrollingText 
               text={`${contractAddress} • `}
               fontSize={fontSize}
+              style={customFontStyle}
               direction="right"
             />
           </div>
