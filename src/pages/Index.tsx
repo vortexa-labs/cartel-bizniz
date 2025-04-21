@@ -14,23 +14,17 @@ const Index = () => {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    // Set loaded state to true after component mount
     setLoaded(true);
-    
-    // Set page title and description
     document.title = "Modern Brand | Scrolling Showcase";
-    
-    // For accessibility, ensure links are properly described
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute("content", "Modern brand showcase with scrolling text and video background");
     }
   }, []);
 
-  // Font size: 28px, bold.
-  const fontSize = "font-bold";
+  // Set font size to 23px, bold, everywhere for scrolling text
   const customFontStyle: React.CSSProperties = {
-    fontSize: "28px",
+    fontSize: "23px",
     fontWeight: 700,
     lineHeight: 1.2,
   };
@@ -59,8 +53,7 @@ const Index = () => {
         {/* Top Scrolling Text */}
         <div className={borderClasses + " py-5"}>
           <ScrollingText 
-            text={`${contractAddress} • `} 
-            fontSize={fontSize}
+            text={contractAddress}
             style={customFontStyle}
           />
         </div>
@@ -78,8 +71,7 @@ const Index = () => {
           {/* Bottom Scrolling Text */}
           <div className={borderClasses + " py-4"}>
             <ScrollingText 
-              text={`${contractAddress} • `}
-              fontSize={fontSize}
+              text={contractAddress}
               style={customFontStyle}
               direction="right"
             />
@@ -91,4 +83,3 @@ const Index = () => {
 };
 
 export default Index;
-
