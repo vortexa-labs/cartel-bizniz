@@ -22,19 +22,22 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     
     const handleLoaded = () => {
       setIsLoaded(true);
+      videoElement.play().catch(error => {
+        console.error("Error attempting to play video:", error);
+      });
     };
     
-    videoElement.addEventListener('loadeddata', handleLoaded);
+    videoElement.addEventListener('loadedmetadata', handleLoaded);
     
     // If video is already loaded by the time we add the listener
     if (videoElement.readyState >= 3) {
-      setIsLoaded(true);
+      handleLoaded();
     }
     
     return () => {
-      videoElement.removeEventListener('loadeddata', handleLoaded);
+      videoElement.removeEventListener('loadedmetadata', handleLoaded);
     };
-  }, []);
+  }, [videoUrl]);
 
   return (
     <div className="absolute inset-0 z-0">
@@ -58,3 +61,4 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
 };
 
 export default VideoBackground;
+

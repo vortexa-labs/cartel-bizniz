@@ -20,7 +20,7 @@ const Index = () => {
 
   const customFontStyle: React.CSSProperties = {
     fontSize: "15px",
-    fontWeight: 400, // normal weight,
+    fontWeight: 400,
     lineHeight: 1.2,
     color: "#F97316",
   };
@@ -29,20 +29,11 @@ const Index = () => {
 
   return (
     <div className={`relative min-h-screen w-full overflow-hidden bg-black text-white animate-fade-in`}>
-      {/* Background Video */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px] z-10"></div>
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="h-full w-full object-cover"
-        >
-          <source src="/hero.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div>
+      <VideoBackground 
+        videoUrl="/hero.mp4" 
+        overlayOpacity={50} 
+        blurAmount={2} 
+      />
 
       {/* Content Container */}
       <div className="relative z-20 flex flex-col justify-between min-h-screen h-full">
