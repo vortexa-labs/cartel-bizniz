@@ -28,18 +28,13 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     const handleLoaded = () => {
       setIsLoaded(true);
       console.log("Video loaded successfully");
+      console.log("Video duration:", videoElement.duration);
+      console.log("Video src:", videoElement.currentSrc);
       
-      // Try to play the video with a user interaction simulation
-      const playPromise = videoElement.play();
-      
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          console.log("Autoplay started successfully");
-        }).catch(error => {
-          console.error("Autoplay was prevented:", error);
-          setHasError(true);
-        });
-      }
+      videoElement.play().catch(error => {
+        console.error("Autoplay prevented:", error);
+        setHasError(true);
+      });
     };
     
     const handleError = (e: Event) => {
@@ -47,17 +42,16 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       setHasError(true);
     };
     
-    // Add event listeners
-    videoElement.addEventListener('loadeddata', handleLoaded);
+    videoElement.addEventListener('canplaythrough', handleLoaded);
     videoElement.addEventListener('error', handleError);
     
-    // If video is already loaded by the time we add the listener
-    if (videoElement.readyState >= 3) {
+    // Fallback if video is already loaded
+    if (videoElement.readyState >= 2) {
       handleLoaded();
     }
     
     return () => {
-      videoElement.removeEventListener('loadeddata', handleLoaded);
+      videoElement.removeEventListener('canplaythrough', handleLoaded);
       videoElement.removeEventListener('error', handleError);
     };
   }, [videoUrl]);
@@ -77,6 +71,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       )}
       <video
         ref={videoRef}
+        src={videoUrl}
         autoPlay
         loop
         muted
@@ -84,7 +79,6 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
         className={`h-full w-full object-cover transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
         preload="auto"
       >
-        <source src={videoUrl} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
     </div>
