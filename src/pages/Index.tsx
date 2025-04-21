@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import ScrollingText from "@/components/ScrollingText";
 import SocialIcons from "@/components/SocialIcons";
@@ -27,10 +28,14 @@ const Index = () => {
 
   const borderClasses = "border-y border-[#222] bg-black/60 backdrop-blur-sm shadow-[0_0_8px_1px_#F97316]";
 
+  // Make sure we're using the correct path to the video
+  const videoPath = "/hero.mp4"; // This should be in the public folder
+  console.log("Loading video from path:", videoPath);
+
   return (
     <div className={`relative min-h-screen w-full overflow-hidden bg-black text-white animate-fade-in`}>
       <VideoBackground 
-        videoUrl="/hero.mp4" 
+        videoUrl={videoPath}
         overlayOpacity={50} 
         blurAmount={2} 
       />
