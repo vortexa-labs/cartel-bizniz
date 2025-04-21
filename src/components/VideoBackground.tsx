@@ -21,14 +21,25 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     
     if (!videoElement) return;
     
+    // Reset states when video URL changes
+    setIsLoaded(false);
+    setHasError(false);
+    
     const handleLoaded = () => {
       setIsLoaded(true);
       console.log("Video loaded successfully");
       
-      videoElement.play().catch(error => {
-        console.error("Error attempting to play video:", error);
-        setHasError(true);
-      });
+      // Try to play the video with a user interaction simulation
+      const playPromise = videoElement.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          console.log("Autoplay started successfully");
+        }).catch(error => {
+          console.error("Autoplay was prevented:", error);
+          setHasError(true);
+        });
+      }
     };
     
     const handleError = (e: Event) => {
@@ -36,7 +47,8 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       setHasError(true);
     };
     
-    videoElement.addEventListener('loadedmetadata', handleLoaded);
+    // Add event listeners
+    videoElement.addEventListener('loadeddata', handleLoaded);
     videoElement.addEventListener('error', handleError);
     
     // If video is already loaded by the time we add the listener
@@ -45,19 +57,22 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     }
     
     return () => {
-      videoElement.removeEventListener('loadedmetadata', handleLoaded);
+      videoElement.removeEventListener('loadeddata', handleLoaded);
       videoElement.removeEventListener('error', handleError);
     };
   }, [videoUrl]);
 
   return (
-    <div className="absolute inset-0 z-0">
+    <div className="absolute inset-0 z-0 overflow-hidden">
       <div 
-        className={`absolute inset-0 bg-black/50 backdrop-blur-[2px] z-10 transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+        className={`absolute inset-0 bg-black/${overlayOpacity} backdrop-blur-[${blurAmount}px] z-10 transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
       ></div>
       {hasError && (
         <div className="absolute inset-0 flex items-center justify-center text-white bg-black/80 z-20">
-          <p>Unable to load video. Please check the path: {videoUrl}</p>
+          <p className="text-center p-4">
+            Unable to load video from: {videoUrl}<br/>
+            Please check that the file exists and is in the correct format.
+          </p>
         </div>
       )}
       <video

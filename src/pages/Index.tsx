@@ -28,8 +28,9 @@ const Index = () => {
 
   const borderClasses = "border-y border-[#222] bg-black/60 backdrop-blur-sm shadow-[0_0_8px_1px_#F97316]";
 
-  // Make sure we're using the correct path to the video
-  const videoPath = "/hero.mp4"; // This should be in the public folder
+  // The video must be in the public folder to be accessible
+  // Verify the path is correct relative to the public directory
+  const videoPath = "/hero.mp4";
   console.log("Loading video from path:", videoPath);
 
   return (
