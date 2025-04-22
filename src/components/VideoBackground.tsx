@@ -11,8 +11,8 @@ interface VideoBackgroundProps {
 
 const VideoBackground: React.FC<VideoBackgroundProps> = ({
   videoUrl,
-  overlayOpacity = 50,
-  blurAmount = 2,
+  overlayOpacity = 0, // Changed from 50 to 0 to remove the overlay by default
+  blurAmount = 0, // Changed from 2 to 0 to remove blur by default
   fallbackImageUrl,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -89,10 +89,13 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   return (
     <div className="absolute inset-0 z-0">
       <div className="relative w-full h-full">
-        <div 
-          style={{ backdropFilter: `blur(${blurAmount}px)` }}
-          className={`absolute inset-0 bg-black/${overlayOpacity} z-10 transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-        ></div>
+        {/* Only apply the overlay if overlayOpacity is greater than 0 */}
+        {overlayOpacity > 0 && (
+          <div 
+            style={{ backdropFilter: blurAmount > 0 ? `blur(${blurAmount}px)` : 'none' }}
+            className={`absolute inset-0 bg-black/${overlayOpacity} z-10 transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+          ></div>
+        )}
         
         {hasError && fallbackImageUrl && (
           <div className="absolute inset-0 z-5">
