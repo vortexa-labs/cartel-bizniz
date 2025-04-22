@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
@@ -72,7 +71,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   };
 
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden">
+    <div className="absolute inset-0 z-0 overflow-hidden flex items-center justify-center">
       <div 
         style={{ backdropFilter: `blur(${blurAmount}px)` }}
         className={`absolute inset-0 bg-black/${overlayOpacity} z-10 transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
@@ -103,7 +102,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
         autoPlay
         loop
         playsInline
-        className={`h-full w-full object-cover transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+        className={`w-auto h-auto max-w-none transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
         preload="auto"
       >
         Your browser does not support the video tag.
