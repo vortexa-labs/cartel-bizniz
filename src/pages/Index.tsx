@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import ScrollingText from "@/components/ScrollingText";
 import SocialIcons from "@/components/SocialIcons";
@@ -27,7 +28,7 @@ const Index = () => {
 
   const borderClasses = "border-y border-[#222] bg-black/60 backdrop-blur-sm shadow-[0_0_8px_1px_#F97316]";
 
-  // Updated video path to the new file
+  // Ensure the video path starts with a slash
   const videoPath = "/ssstwitter.com_1745157809978.mp4";
   const fallbackImagePath = "/lovable-uploads/2315e86c-dabc-4acc-872a-4b2a89136c42.png";
   

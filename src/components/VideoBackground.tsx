@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
@@ -36,7 +37,13 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       
       videoElement.play().catch(error => {
         console.error("Autoplay prevented:", error);
-        setHasError(true);
+        // Try with muted option as fallback for autoplay policy
+        videoElement.muted = true;
+        setIsMuted(true);
+        videoElement.play().catch(innerError => {
+          console.error("Muted autoplay also prevented:", innerError);
+          setHasError(true);
+        });
       });
     };
     
@@ -98,13 +105,14 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       
       <video
         ref={videoRef}
-        src={videoUrl}
+        muted={isMuted}
         autoPlay
         loop
         playsInline
         className={`w-auto h-auto max-w-none transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
         preload="auto"
       >
+        <source src={videoUrl} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
