@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
@@ -77,8 +78,8 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   };
 
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden">
-      <div className="relative w-full h-full flex items-center justify-center">
+    <div className="absolute inset-0 z-0">
+      <div className="relative w-full h-full">
         <div 
           style={{ backdropFilter: `blur(${blurAmount}px)` }}
           className={`absolute inset-0 bg-black/${overlayOpacity} z-10 transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
@@ -89,7 +90,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
             <img 
               src={fallbackImageUrl} 
               alt="Background" 
-              className="h-full w-full object-contain"
+              className="w-full h-full object-cover"
             />
           </div>
         )}
@@ -101,7 +102,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
             autoPlay
             loop
             playsInline
-            className={`w-auto h-full max-w-none object-contain transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+            className={`min-w-full min-h-full w-auto h-auto object-cover transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
             preload="auto"
           >
             <source src={videoUrl} type="video/mp4" />

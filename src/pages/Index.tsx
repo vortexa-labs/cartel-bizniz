@@ -32,9 +32,15 @@ const Index = () => {
   
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-black text-white animate-fade-in">
+      <VideoBackground 
+        videoUrl={videoPath}
+        overlayOpacity={50} 
+        blurAmount={2}
+        fallbackImageUrl={fallbackImagePath}
+      />
+      
       <div className="absolute inset-0 z-10">
         <div className="relative h-full flex flex-col">
-          {/* Top Scrolling Text */}
           <div className={`${borderClasses} py-2 relative z-20`}>
             <ScrollingText 
               text={contractAddress}
@@ -43,19 +49,9 @@ const Index = () => {
             />
           </div>
 
-          {/* Video Container */}
-          <div className="flex-1 relative overflow-hidden">
-            <VideoBackground 
-              videoUrl={videoPath}
-              overlayOpacity={50} 
-              blurAmount={2}
-              fallbackImageUrl={fallbackImagePath}
-            />
-            
-            {/* Center Content */}
-            <div className="absolute inset-0 flex items-center justify-center z-20">
-              <HeroButton href="#how-to-buy" className="hover:rotate-1">HOW TO BUY</HeroButton>
-            </div>
+          {/* Center Content */}
+          <div className="flex-1 relative flex items-center justify-center z-20">
+            <HeroButton href="#how-to-buy" className="hover:rotate-1">HOW TO BUY</HeroButton>
           </div>
 
           {/* Bottom Section */}
