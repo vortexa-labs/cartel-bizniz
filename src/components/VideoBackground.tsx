@@ -1,6 +1,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
+import { Toggle } from "@/components/ui/toggle";
 
 interface VideoBackgroundProps {
   videoUrl: string;
@@ -83,7 +84,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
 
   const toggleMute = () => {
     console.log("Toggle mute clicked, current state:", isMuted);
-    setIsMuted(prevState => !prevState);
+    setIsMuted(!isMuted);
   };
 
   return (
@@ -123,16 +124,17 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
         </div>
 
         {isLoaded && !hasError && (
-          <button 
-            onClick={toggleMute} 
-            className="absolute bottom-20 right-4 z-30 bg-black/50 p-2 rounded-full hover:bg-black/70 transition-colors sm:p-3"
+          <Toggle 
+            className="fixed bottom-20 right-4 z-50 bg-black/50 p-2 rounded-full hover:bg-black/70 transition-colors sm:p-3"
+            onClick={toggleMute}
             aria-label={isMuted ? "Unmute video" : "Mute video"}
+            pressed={isMuted}
           >
             {isMuted ? 
               <VolumeX className="text-white w-5 h-5 sm:w-6 sm:h-6" /> : 
               <Volume2 className="text-white w-5 h-5 sm:w-6 sm:h-6" />
             }
-          </button>
+          </Toggle>
         )}
       </div>
     </div>
