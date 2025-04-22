@@ -1,5 +1,7 @@
 
 import { useEffect, useRef, useState } from "react";
+import { Volume2, VolumeX } from "lucide-react";
+import { Toggle } from "@/components/ui/toggle";
 
 interface VideoBackgroundProps {
   videoUrl: string;
@@ -17,6 +19,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [isMuted, setIsMuted] = useState(true); // Start muted to allow autoplay
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -33,6 +36,8 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       setIsLoaded(true);
       console.log("Video loaded successfully");
       
+      // Always start with autoplay muted (browser requirement)
+      videoElement.muted = true;
       videoElement.play().catch(error => {
         console.error("Autoplay prevented:", error);
         setHasError(true);
@@ -61,12 +66,44 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     };
   }, [videoUrl]);
 
+  // Update muted state whenever isMuted changes
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (!videoElement) return;
+    
+    videoElement.muted = isMuted;
+    console.log("Video muted state updated to:", isMuted);
+  }, [isMuted]);
+
+  const toggleMute = () => {
+    console.log("Toggle mute clicked");
+    setIsMuted(!isMuted);
+  };
+
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
       <div 
         style={{ backdropFilter: `blur(${blurAmount}px)` }}
         className={`absolute inset-0 bg-black/${overlayOpacity} z-10 transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
       ></div>
+      
+      {/* Volume Toggle */}
+      {isLoaded && !hasError && (
+        <div className="fixed bottom-4 right-4 z-50 pointer-events-auto">
+          <Toggle 
+            pressed={isMuted}
+            onPressedChange={setIsMuted}
+            className="bg-black/50 hover:bg-black/70 p-2 rounded-full transition-colors"
+            aria-label={isMuted ? "Unmute" : "Mute"}
+          >
+            {isMuted ? (
+              <VolumeX className="h-5 w-5 text-white" />
+            ) : (
+              <Volume2 className="h-5 w-5 text-white" />
+            )}
+          </Toggle>
+        </div>
+      )}
       
       {hasError && (
         <div className="absolute inset-0 z-5">
