@@ -18,7 +18,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false); // Changed to false for sound on by default
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -113,9 +113,12 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
         {isLoaded && !hasError && (
           <button 
             onClick={toggleMute} 
-            className="absolute bottom-20 right-4 z-30 bg-black/50 p-2 rounded-full"
+            className="absolute bottom-20 right-4 z-30 bg-black/50 p-2 rounded-full hover:bg-black/70 transition-colors sm:p-3"
           >
-            {isMuted ? <VolumeX className="text-white" /> : <Volume2 className="text-white" />}
+            {isMuted ? 
+              <VolumeX className="text-white w-5 h-5 sm:w-6 sm:h-6" /> : 
+              <Volume2 className="text-white w-5 h-5 sm:w-6 sm:h-6" />
+            }
           </button>
         )}
       </div>
@@ -124,4 +127,3 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
 };
 
 export default VideoBackground;
-
