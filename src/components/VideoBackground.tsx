@@ -35,8 +35,9 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       setIsLoaded(true);
       console.log("Video loaded successfully");
       
-      // Set the muted state based on component state
+      // Ensure video muted state matches component state
       videoElement.muted = isMuted;
+      console.log("Initial muted state:", isMuted);
       
       videoElement.play().catch(error => {
         console.error("Autoplay prevented:", error);
@@ -72,13 +73,17 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     };
   }, [videoUrl, isMuted]);
 
-  const toggleMute = () => {
+  // Update video muted state whenever isMuted changes
+  useEffect(() => {
     if (videoRef.current) {
-      const newMutedState = !isMuted;
-      videoRef.current.muted = newMutedState;
-      setIsMuted(newMutedState);
-      console.log("Mute toggled, new state:", newMutedState);
+      videoRef.current.muted = isMuted;
+      console.log("Video muted state updated to:", isMuted);
     }
+  }, [isMuted]);
+
+  const toggleMute = () => {
+    console.log("Toggle mute clicked, current state:", isMuted);
+    setIsMuted(prevState => !prevState);
   };
 
   return (
