@@ -8,6 +8,7 @@ interface VideoBackgroundProps {
   overlayOpacity?: number;
   blurAmount?: number;
   fallbackImageUrl?: string;
+  userInteracted?: boolean;
 }
 
 const VideoBackground: React.FC<VideoBackgroundProps> = ({
@@ -15,12 +16,13 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   overlayOpacity = 50,
   blurAmount = 2,
   fallbackImageUrl,
+  userInteracted = false,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [isMuted, setIsMuted] = useState(true); // Start muted to allow autoplay
-
+  const [isMuted, setIsMuted] = useState(!userInteracted); // Unmuted if user interacted
+  
   useEffect(() => {
     const videoElement = videoRef.current;
     
@@ -36,8 +38,9 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       setIsLoaded(true);
       console.log("Video loaded successfully");
       
-      // Always start with autoplay muted (browser requirement)
-      videoElement.muted = true;
+      // Start with muted state based on user interaction
+      videoElement.muted = !userInteracted;
+      
       videoElement.play().catch(error => {
         console.error("Autoplay prevented:", error);
         setHasError(true);
@@ -64,7 +67,16 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       videoElement.removeEventListener('canplay', handleLoaded);
       videoElement.removeEventListener('error', handleError);
     };
-  }, [videoUrl]);
+  }, [videoUrl, userInteracted]);
+
+  // Effect for user interaction updates
+  useEffect(() => {
+    if (userInteracted && videoRef.current) {
+      setIsMuted(false);
+      videoRef.current.muted = false;
+      console.log("User interacted, unmuting video");
+    }
+  }, [userInteracted]);
 
   // Update muted state whenever isMuted changes
   useEffect(() => {
@@ -129,7 +141,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
         src={videoUrl}
         autoPlay
         loop
-        muted
+        muted={!userInteracted}
         playsInline
         className={`h-full w-full object-cover transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
         preload="auto"

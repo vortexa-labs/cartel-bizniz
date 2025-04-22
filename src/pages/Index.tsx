@@ -1,13 +1,17 @@
+
 import React, { useEffect, useState } from "react";
 import ScrollingText from "@/components/ScrollingText";
 import SocialIcons from "@/components/SocialIcons";
 import HeroButton from "@/components/HeroButton";
 import VideoBackground from "@/components/VideoBackground";
+import PreloaderScreen from "@/components/PreloaderScreen";
 
 const contractAddress = "DX6XqmtEs8zTyswu4cBpsgAvjsw1kUGGi6rxF3jWpump";
 
 const Index = () => {
   const [loaded, setLoaded] = useState(false);
+  const [userInteracted, setUserInteracted] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     setLoaded(true);
@@ -16,7 +20,21 @@ const Index = () => {
     if (metaDescription) {
       metaDescription.setAttribute("content", "Modern brand showcase with scrolling text and video background");
     }
+    
+    // Simulate loading progress
+    const interval = setInterval(() => {
+      setProgress(prev => {
+        const newProgress = prev + Math.floor(Math.random() * 10);
+        return newProgress >= 100 ? 100 : newProgress;
+      });
+    }, 300);
+    
+    return () => clearInterval(interval);
   }, []);
+
+  const handlePreloaderComplete = () => {
+    setUserInteracted(true);
+  };
 
   const customFontStyle: React.CSSProperties = {
     fontSize: "15px",
@@ -35,11 +53,19 @@ const Index = () => {
 
   return (
     <div className={`relative min-h-screen w-full overflow-hidden bg-black text-white animate-fade-in`}>
+      {!userInteracted && (
+        <PreloaderScreen 
+          onComplete={handlePreloaderComplete} 
+          progress={progress}
+        />
+      )}
+      
       <VideoBackground 
         videoUrl={videoPath}
         overlayOpacity={50} 
         blurAmount={2}
         fallbackImageUrl={fallbackImagePath}
+        userInteracted={userInteracted}
       />
 
       {/* Content Container */}
