@@ -1,7 +1,5 @@
 
 import { useEffect, useRef, useState } from "react";
-import { Volume2, VolumeX } from "lucide-react";
-import { Toggle } from "@/components/ui/toggle";
 
 interface VideoBackgroundProps {
   videoUrl: string;
@@ -12,15 +10,14 @@ interface VideoBackgroundProps {
 
 const VideoBackground: React.FC<VideoBackgroundProps> = ({
   videoUrl,
-  overlayOpacity = 0,
-  blurAmount = 0,
+  overlayOpacity = 50,
+  blurAmount = 2,
   fallbackImageUrl,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [isMuted, setIsMuted] = useState(false); // Changed to false as requested
-  
+
   useEffect(() => {
     const videoElement = videoRef.current;
     
@@ -36,19 +33,9 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       setIsLoaded(true);
       console.log("Video loaded successfully");
       
-      // Ensure video muted state matches component state
-      videoElement.muted = isMuted;
-      console.log("Initial muted state:", isMuted);
-      
       videoElement.play().catch(error => {
         console.error("Autoplay prevented:", error);
-        // Try with muted option as fallback for autoplay policy
-        videoElement.muted = true;
-        setIsMuted(true);
-        videoElement.play().catch(innerError => {
-          console.error("Muted autoplay also prevented:", innerError);
-          setHasError(true);
-        });
+        setHasError(true);
       });
     };
     
@@ -72,73 +59,46 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       videoElement.removeEventListener('canplay', handleLoaded);
       videoElement.removeEventListener('error', handleError);
     };
-  }, [videoUrl, isMuted]);
-
-  // Update video muted state whenever isMuted changes
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.muted = isMuted;
-      console.log("Video muted state updated to:", isMuted);
-    }
-  }, [isMuted]);
-
-  const toggleMute = () => {
-    console.log("Toggle mute clicked, current state:", isMuted);
-    setIsMuted(!isMuted);
-  };
+  }, [videoUrl]);
 
   return (
-    <div className="absolute inset-0 z-0">
-      <div className="relative w-full h-full">
-        {/* Only apply the overlay if overlayOpacity is greater than 0 */}
-        {overlayOpacity > 0 && (
-          <div 
-            style={{ backdropFilter: blurAmount > 0 ? `blur(${blurAmount}px)` : 'none' }}
-            className={`absolute inset-0 bg-black/${overlayOpacity} z-10 transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-          ></div>
-        )}
-        
-        {hasError && fallbackImageUrl && (
-          <div className="absolute inset-0 z-5">
+    <div className="absolute inset-0 z-0 overflow-hidden">
+      <div 
+        style={{ backdropFilter: `blur(${blurAmount}px)` }}
+        className={`absolute inset-0 bg-black/${overlayOpacity} z-10 transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+      ></div>
+      
+      {hasError && (
+        <div className="absolute inset-0 z-5">
+          {fallbackImageUrl ? (
             <img 
               src={fallbackImageUrl} 
               alt="Background" 
-              className="w-full h-full object-cover"
+              className="h-full w-full object-cover"
             />
-          </div>
-        )}
-        
-        <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-          <video
-            ref={videoRef}
-            muted={isMuted}
-            autoPlay
-            loop
-            playsInline
-            className={`min-w-full min-h-full w-auto h-auto object-cover transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-            preload="auto"
-          >
-            <source src={videoUrl} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center text-white bg-black/80 z-20">
+              <p className="text-center p-4">
+                Unable to load video from: {videoUrl}<br/>
+                Please check that the file exists and is in the correct format.
+              </p>
+            </div>
+          )}
         </div>
-
-        {isLoaded && !hasError && (
-          <div className="fixed bottom-20 right-4 z-50">
-            <Toggle 
-              className="bg-black/50 p-2 rounded-full hover:bg-black/70 transition-colors sm:p-3 pointer-events-auto"
-              onClick={toggleMute}
-              aria-label={isMuted ? "Unmute video" : "Mute video"}
-              pressed={isMuted}
-            >
-              {isMuted ? 
-                <VolumeX className="text-white w-5 h-5 sm:w-6 sm:h-6" /> : 
-                <Volume2 className="text-white w-5 h-5 sm:w-6 sm:h-6" />
-              }
-            </Toggle>
-          </div>
-        )}
-      </div>
+      )}
+      
+      <video
+        ref={videoRef}
+        src={videoUrl}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className={`h-full w-full object-cover transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+        preload="auto"
+      >
+        Your browser does not support the video tag.
+      </video>
     </div>
   );
 };
