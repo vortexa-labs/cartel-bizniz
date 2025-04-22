@@ -18,7 +18,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [isMuted, setIsMuted] = useState(false); // Changed to false for sound on by default
+  const [isMuted, setIsMuted] = useState(false); // Sound on by default
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -34,6 +34,9 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     const handleLoaded = () => {
       setIsLoaded(true);
       console.log("Video loaded successfully");
+      
+      // Set the muted state based on component state
+      videoElement.muted = isMuted;
       
       videoElement.play().catch(error => {
         console.error("Autoplay prevented:", error);
@@ -67,13 +70,14 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       videoElement.removeEventListener('canplay', handleLoaded);
       videoElement.removeEventListener('error', handleError);
     };
-  }, [videoUrl]);
+  }, [videoUrl, isMuted]);
 
   const toggleMute = () => {
     if (videoRef.current) {
       const newMutedState = !isMuted;
       videoRef.current.muted = newMutedState;
       setIsMuted(newMutedState);
+      console.log("Mute toggled, new state:", newMutedState);
     }
   };
 
@@ -114,6 +118,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
           <button 
             onClick={toggleMute} 
             className="absolute bottom-20 right-4 z-30 bg-black/50 p-2 rounded-full hover:bg-black/70 transition-colors sm:p-3"
+            aria-label={isMuted ? "Unmute video" : "Mute video"}
           >
             {isMuted ? 
               <VolumeX className="text-white w-5 h-5 sm:w-6 sm:h-6" /> : 
