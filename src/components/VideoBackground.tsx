@@ -21,14 +21,12 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [isMuted, setIsMuted] = useState(!userInteracted); // Unmuted if user interacted
+  const [isMuted, setIsMuted] = useState(!userInteracted);
   
   useEffect(() => {
     const videoElement = videoRef.current;
-    
     if (!videoElement) return;
     
-    // Reset states when video URL changes
     setIsLoaded(false);
     setHasError(false);
     
@@ -37,8 +35,6 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     const handleLoaded = () => {
       setIsLoaded(true);
       console.log("Video loaded successfully");
-      
-      // Start with muted state based on user interaction
       videoElement.muted = !userInteracted;
       
       videoElement.play().catch(error => {
@@ -52,12 +48,10 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       setHasError(true);
     };
     
-    // Using multiple event listeners to catch various loading scenarios
     videoElement.addEventListener('loadeddata', handleLoaded);
-    videoElement.addEventListener('canplay', handleLoaded); 
+    videoElement.addEventListener('canplay', handleLoaded);
     videoElement.addEventListener('error', handleError);
     
-    // Fallback if video is already loaded
     if (videoElement.readyState >= 2) {
       handleLoaded();
     }
@@ -69,7 +63,6 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     };
   }, [videoUrl, userInteracted]);
 
-  // Effect for user interaction updates
   useEffect(() => {
     if (userInteracted && videoRef.current) {
       setIsMuted(false);
@@ -78,7 +71,6 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     }
   }, [userInteracted]);
 
-  // Update muted state whenever isMuted changes
   useEffect(() => {
     const videoElement = videoRef.current;
     if (!videoElement) return;
@@ -97,9 +89,8 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
       <div 
         style={{ backdropFilter: `blur(${blurAmount}px)` }}
         className={`absolute inset-0 bg-black/${overlayOpacity} z-10 transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-      ></div>
+      />
       
-      {/* Volume Toggle */}
       {isLoaded && !hasError && (
         <div className="fixed bottom-4 right-4 z-50 pointer-events-auto">
           <Toggle 
@@ -117,37 +108,31 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
         </div>
       )}
       
-      {hasError && (
+      {hasError && fallbackImageUrl && (
         <div className="absolute inset-0 z-5">
-          {fallbackImageUrl ? (
-            <img 
-              src={fallbackImageUrl} 
-              alt="Background" 
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-white bg-black/80 z-20">
-              <p className="text-center p-4">
-                Unable to load video from: {videoUrl}<br/>
-                Please check that the file exists and is in the correct format.
-              </p>
-            </div>
-          )}
+          <img 
+            src={fallbackImageUrl} 
+            alt="Background" 
+            className="h-full w-full object-cover"
+          />
         </div>
       )}
       
-      <video
-        ref={videoRef}
-        src={videoUrl}
-        autoPlay
-        loop
-        muted={!userInteracted}
-        playsInline
-        className={`h-full w-full object-cover transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-        preload="auto"
-      >
-        Your browser does not support the video tag.
-      </video>
+      <div className="absolute inset-0">
+        <video
+          ref={videoRef}
+          className="h-full w-full object-cover"
+          autoPlay
+          loop
+          muted={!userInteracted}
+          playsInline
+          preload="auto"
+          style={{ imageRendering: 'auto' }}
+        >
+          <source src={videoUrl} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
     </div>
   );
 };
