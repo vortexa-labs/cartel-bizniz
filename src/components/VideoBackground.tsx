@@ -1,5 +1,6 @@
 
 import { useEffect, useRef, useState } from "react";
+import { Volume2, VolumeX } from "lucide-react";
 
 interface VideoBackgroundProps {
   videoUrl: string;
@@ -17,6 +18,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -61,6 +63,14 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
     };
   }, [videoUrl]);
 
+  const toggleMute = () => {
+    if (videoRef.current) {
+      const newMutedState = !isMuted;
+      videoRef.current.muted = newMutedState;
+      setIsMuted(newMutedState);
+    }
+  };
+
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
       <div 
@@ -92,13 +102,21 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
         src={videoUrl}
         autoPlay
         loop
-        muted
         playsInline
         className={`h-full w-full object-cover transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
         preload="auto"
       >
         Your browser does not support the video tag.
       </video>
+
+      {isLoaded && !hasError && (
+        <button 
+          onClick={toggleMute} 
+          className="absolute top-4 right-4 z-30 bg-black/50 p-2 rounded-full"
+        >
+          {isMuted ? <VolumeX className="text-white" /> : <Volume2 className="text-white" />}
+        </button>
+      )}
     </div>
   );
 };
