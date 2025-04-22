@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import ScrollingText from "@/components/ScrollingText";
 import SocialIcons from "@/components/SocialIcons";
@@ -28,50 +27,48 @@ const Index = () => {
 
   const borderClasses = "border-y border-[#222] bg-black/60 backdrop-blur-sm shadow-[0_0_8px_1px_#F97316]";
 
-  // Ensure the video path starts with a slash
   const videoPath = "/ssstwitter.com_1745157809978.mp4";
   const fallbackImagePath = "/lovable-uploads/2315e86c-dabc-4acc-872a-4b2a89136c42.png";
   
-  console.log("Loading video from path:", videoPath);
-
   return (
-    <div className={`relative min-h-screen w-full overflow-hidden bg-black text-white animate-fade-in`}>
-      <VideoBackground 
-        videoUrl={videoPath}
-        overlayOpacity={50} 
-        blurAmount={2}
-        fallbackImageUrl={fallbackImagePath}
-      />
-
-      {/* Content Container */}
-      <div className="relative z-20 flex flex-col justify-between min-h-screen h-full">
-        {/* Top Scrolling Text */}
-        <div className={`${borderClasses} py-2`}>
-          <ScrollingText 
-            text={contractAddress}
-            style={customFontStyle}
-            duration={60} // even slower scroll speed
-          />
-        </div>
-
-        {/* Center Content */}
-        <div className="flex-1 flex items-center justify-center px-4">
-          <HeroButton href="#how-to-buy" className="hover:rotate-1">HOW TO BUY</HeroButton>
-        </div>
-
-        {/* Bottom Section */}
-        <div className="flex flex-col">
-          {/* Social Icons */}
-          <SocialIcons className="py-6" />
-          
-          {/* Bottom Scrolling Text */}
-          <div className={`${borderClasses} py-2`}>
+    <div className="relative min-h-screen w-full overflow-hidden bg-black text-white animate-fade-in">
+      <div className="absolute inset-0 z-10">
+        <div className="relative h-full flex flex-col">
+          {/* Top Scrolling Text */}
+          <div className={`${borderClasses} py-2 relative z-20`}>
             <ScrollingText 
               text={contractAddress}
               style={customFontStyle}
-              direction="right"
-              duration={60} // even slower scroll speed
+              duration={60}
             />
+          </div>
+
+          {/* Video Container */}
+          <div className="flex-1 relative overflow-hidden">
+            <VideoBackground 
+              videoUrl={videoPath}
+              overlayOpacity={50} 
+              blurAmount={2}
+              fallbackImageUrl={fallbackImagePath}
+            />
+            
+            {/* Center Content */}
+            <div className="absolute inset-0 flex items-center justify-center z-20">
+              <HeroButton href="#how-to-buy" className="hover:rotate-1">HOW TO BUY</HeroButton>
+            </div>
+          </div>
+
+          {/* Bottom Section */}
+          <div className="flex flex-col relative z-20">
+            <SocialIcons className="py-6" />
+            <div className={`${borderClasses} py-2`}>
+              <ScrollingText 
+                text={contractAddress}
+                style={customFontStyle}
+                direction="right"
+                duration={60}
+              />
+            </div>
           </div>
         </div>
       </div>

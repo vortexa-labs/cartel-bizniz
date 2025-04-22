@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 
@@ -78,52 +77,47 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
   };
 
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden flex items-center justify-center">
-      <div 
-        style={{ backdropFilter: `blur(${blurAmount}px)` }}
-        className={`absolute inset-0 bg-black/${overlayOpacity} z-10 transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-      ></div>
-      
-      {hasError && (
-        <div className="absolute inset-0 z-5">
-          {fallbackImageUrl ? (
+    <div className="absolute inset-0 z-0 overflow-hidden">
+      <div className="relative w-full h-full flex items-center justify-center">
+        <div 
+          style={{ backdropFilter: `blur(${blurAmount}px)` }}
+          className={`absolute inset-0 bg-black/${overlayOpacity} z-10 transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+        ></div>
+        
+        {hasError && fallbackImageUrl && (
+          <div className="absolute inset-0 z-5">
             <img 
               src={fallbackImageUrl} 
               alt="Background" 
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain"
             />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-white bg-black/80 z-20">
-              <p className="text-center p-4">
-                Unable to load video from: {videoUrl}<br/>
-                Please check that the file exists and is in the correct format.
-              </p>
-            </div>
-          )}
+          </div>
+        )}
+        
+        <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+          <video
+            ref={videoRef}
+            muted={isMuted}
+            autoPlay
+            loop
+            playsInline
+            className={`w-auto h-full max-w-none object-contain transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+            preload="auto"
+          >
+            <source src={videoUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
-      )}
-      
-      <video
-        ref={videoRef}
-        muted={isMuted}
-        autoPlay
-        loop
-        playsInline
-        className={`w-auto h-auto max-w-none transition-opacity duration-1000 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-        preload="auto"
-      >
-        <source src={videoUrl} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
 
-      {isLoaded && !hasError && (
-        <button 
-          onClick={toggleMute} 
-          className="absolute top-4 right-4 z-30 bg-black/50 p-2 rounded-full"
-        >
-          {isMuted ? <VolumeX className="text-white" /> : <Volume2 className="text-white" />}
-        </button>
-      )}
+        {isLoaded && !hasError && (
+          <button 
+            onClick={toggleMute} 
+            className="absolute top-4 right-4 z-30 bg-black/50 p-2 rounded-full"
+          >
+            {isMuted ? <VolumeX className="text-white" /> : <Volume2 className="text-white" />}
+          </button>
+        )}
+      </div>
     </div>
   );
 };
