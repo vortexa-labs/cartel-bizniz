@@ -113,7 +113,7 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
         {isLoaded && !hasError && (
           <button 
             onClick={toggleMute} 
-            className="absolute top-4 right-4 z-30 bg-black/50 p-2 rounded-full"
+            className="absolute bottom-20 right-4 z-30 bg-black/50 p-2 rounded-full"
           >
             {isMuted ? <VolumeX className="text-white" /> : <Volume2 className="text-white" />}
           </button>
@@ -124,3 +124,4 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
 };
 
 export default VideoBackground;
+
