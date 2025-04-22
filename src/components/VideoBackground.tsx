@@ -12,15 +12,15 @@ interface VideoBackgroundProps {
 
 const VideoBackground: React.FC<VideoBackgroundProps> = ({
   videoUrl,
-  overlayOpacity = 0, // Changed from 50 to 0 to remove the overlay by default
-  blurAmount = 0, // Changed from 2 to 0 to remove blur by default
+  overlayOpacity = 0,
+  blurAmount = 0,
   fallbackImageUrl,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [isMuted, setIsMuted] = useState(false); // Sound on by default
-
+  const [isMuted, setIsMuted] = useState(false); // Changed to false as requested
+  
   useEffect(() => {
     const videoElement = videoRef.current;
     
@@ -124,17 +124,19 @@ const VideoBackground: React.FC<VideoBackgroundProps> = ({
         </div>
 
         {isLoaded && !hasError && (
-          <Toggle 
-            className="fixed bottom-20 right-4 z-50 bg-black/50 p-2 rounded-full hover:bg-black/70 transition-colors sm:p-3"
-            onClick={toggleMute}
-            aria-label={isMuted ? "Unmute video" : "Mute video"}
-            pressed={isMuted}
-          >
-            {isMuted ? 
-              <VolumeX className="text-white w-5 h-5 sm:w-6 sm:h-6" /> : 
-              <Volume2 className="text-white w-5 h-5 sm:w-6 sm:h-6" />
-            }
-          </Toggle>
+          <div className="fixed bottom-20 right-4 z-50">
+            <Toggle 
+              className="bg-black/50 p-2 rounded-full hover:bg-black/70 transition-colors sm:p-3 pointer-events-auto"
+              onClick={toggleMute}
+              aria-label={isMuted ? "Unmute video" : "Mute video"}
+              pressed={isMuted}
+            >
+              {isMuted ? 
+                <VolumeX className="text-white w-5 h-5 sm:w-6 sm:h-6" /> : 
+                <Volume2 className="text-white w-5 h-5 sm:w-6 sm:h-6" />
+              }
+            </Toggle>
+          </div>
         )}
       </div>
     </div>
